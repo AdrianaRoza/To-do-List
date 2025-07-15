@@ -24,8 +24,13 @@ const App = () => {
       />
 
       <button onClick={adicionarTarefa}>Adicionar</button>
+
+      <ul>
+        {lista.map((item, index)=>(
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
       
-      <p>Tarefa Digitada: {tarefa}</p>
     </div>
   )
 }
