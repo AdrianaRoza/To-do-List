@@ -2,7 +2,14 @@ import { useState } from "react"
 
 const App = () => {
 
-  const [tarefa, setTarefas] = useState("")
+  const [tarefa, setTarefa] = useState("")
+  const [lista, setLista] = useState([])
+
+  const adicionarTarefa = () =>{
+    if(tarefa.trim() === "") return // evita tarefa vazia
+    setLista([...lista, tarefa])
+    setTarefa("")
+  }
 
   return(
     <div>
@@ -12,10 +19,12 @@ const App = () => {
       <input 
         type="text"
         value={tarefa}
-        onChange={(e) => setTarefas(e.target.value)}
+        onChange={(e) => setTarefa(e.target.value)}
         placeholder="Digite uma Tarefa..." 
       />
 
+      <button onClick={adicionarTarefa}>Adicionar</button>
+      
       <p>Tarefa Digitada: {tarefa}</p>
     </div>
   )
