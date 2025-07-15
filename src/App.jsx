@@ -1,10 +1,19 @@
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+
 
 const App = () => {
 
   const [tarefa, setTarefa] = useState("")
-  const [lista, setLista] = useState([])
+  const [lista, setLista] = useState(() => {
+    const dadosSalvos = localStorage.getItem("minhaLista")
+    return dadosSalvos ? JSON.parse(dadosSalvos) : []
+  })
+
+  useEffect(() => {
+  localStorage.setItem("minhaLista", JSON.stringify(lista))
+}, [lista])
+
 
   const adicionarTarefa = () =>{
     if(tarefa.trim() === "") return // evita tarefa vazia
@@ -15,6 +24,11 @@ const App = () => {
   const alternarFeito = (index) => {
     const novaLista = [...lista]
     novaLista[index].feito = !novaLista[index.feito]
+    setLista(novaLista)
+  }
+
+  const removerTarefa = (index) => {
+    const novaLista = lista.filter((_,i) => i !== index)
     setLista(novaLista)
   }
 
@@ -37,7 +51,8 @@ const App = () => {
           <li 
             key={index}
             className="flex justify-between items-center mb-2 bg-orange-100 
-              p-2 rounded-lg shadow-sm"
+              p-2 rounded-lg shadow-sm transition-all duration-300 
+              hover:scale-105 hover:bg-orange-200"
           >
             
             <span
