@@ -1,3 +1,4 @@
+
 import { useState } from "react"
 
 const App = () => {
@@ -35,12 +36,25 @@ const App = () => {
         {lista.map((item, index)=>(
           <li 
             key={index}
-            onClick={() => alternarFeito(index)}
-            className={`cursor-pointer text-lg ${
-              item.feito ? "line-through text-gray-500" : "text-black"
-            }`}
+            className="flex justify-between items-center mb-2 bg-orange-100 
+              p-2 rounded-lg shadow-sm"
           >
+            
+            <span
+              onClick={() => alternarFeito(index)}
+              className={`cursor-pointer text-lg ${
+                item.feito ? "line-through text-gray-500" : "text-black"
+              }`}
+            >
               {item.texto}
+            </span>
+
+            <button 
+              onClick={() => removerTarefa(index)}
+              className="text-red-500 hover:text-red-700 text-xl font-bold 
+                ml-4 transition">
+              Excluir
+            </button>
           </li>
         ))}
       </ul>
