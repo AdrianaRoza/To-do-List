@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from "react"
+import Formulario from "./components/Formulario"
+import ListaTarefas from "./components/ListaTarefas"
 
-
-const App = () => {
-
+export default function App() {
   const [tarefa, setTarefa] = useState("")
   const [lista, setLista] = useState(() => {
     const dadosSalvos = localStorage.getItem("minhaLista")
@@ -11,70 +10,50 @@ const App = () => {
   })
 
   useEffect(() => {
-  localStorage.setItem("minhaLista", JSON.stringify(lista))
-}, [lista])
+    localStorage.setItem("minhaLista", JSON.stringify(lista))
+  }, [lista])
 
-
-  const adicionarTarefa = () =>{
-    if(tarefa.trim() === "") return // evita tarefa vazia
-    setLista([...lista, {texto: tarefa, feito: false}])
+  const adicionarTarefa = () => {
+    if (tarefa.trim() === "") return
+    setLista([...lista, { texto: tarefa, feito: false }])
     setTarefa("")
   }
 
   const alternarFeito = (index) => {
     const novaLista = [...lista]
-    novaLista[index].feito = !novaLista[index.feito]
+    novaLista[index].feito = !novaLista[index].feito
     setLista(novaLista)
   }
 
   const removerTarefa = (index) => {
-    const novaLista = lista.filter((_,i) => i !== index)
+    const novaLista = lista.filter((_, i) => i !== index)
     setLista(novaLista)
   }
 
-  return(
-    <div>
+  return (
+    <div 
+      className="min-h-screen bg-pink-200 p-4 flex items-center 
+        justify-center">
+      <div 
+        className="bg-neutral-600 shadow-xl rounded-2xl p-6 w-full max-w-md 
+          transition-all">
+        <h1 
+          className="text-3xl font-bold text-pink-400 mb-6 text-center">
+           Minha Lista de Tarefas
+        </h1>
 
-      <h1>Minha Lista de Tarefas</h1>
+        <Formulario
+          tarefa={tarefa}
+          setTarefa={setTarefa}
+          adicionarTarefa={adicionarTarefa}
+        />
 
-      <input 
-        type="text"
-        value={tarefa}
-        onChange={(e) => setTarefa(e.target.value)}
-        placeholder="Digite uma Tarefa..." 
-      />
-
-      <button onClick={adicionarTarefa}>Adicionar</button>
-
-      <ul>
-        {lista.map((item, index)=>(
-          <li 
-            key={index}
-            className="flex justify-between items-center mb-2 bg-orange-100 
-              p-2 rounded-lg shadow-sm transition-all duration-300 
-              hover:scale-105 hover:bg-orange-200"
-          >
-            
-            <span
-              onClick={() => alternarFeito(index)}
-              className={`cursor-pointer text-lg ${
-                item.feito ? "line-through text-gray-500" : "text-black"
-              }`}
-            >
-              {item.texto}
-            </span>
-
-            <button 
-              onClick={() => removerTarefa(index)}
-              className="text-red-500 hover:text-red-700 text-xl font-bold 
-                ml-4 transition">
-              Excluir
-            </button>
-          </li>
-        ))}
-      </ul>
-      
+        <ListaTarefas
+          lista={lista}
+          alternarFeito={alternarFeito}
+          removerTarefa={removerTarefa}
+        />
+      </div>
     </div>
   )
 }
-export default App
