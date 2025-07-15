@@ -7,8 +7,14 @@ const App = () => {
 
   const adicionarTarefa = () =>{
     if(tarefa.trim() === "") return // evita tarefa vazia
-    setLista([...lista, tarefa])
+    setLista([...lista, {texto: tarefa, feito: false}])
     setTarefa("")
+  }
+
+  const alternarFeito = (index) => {
+    const novaLista = [...lista]
+    novaLista[index].feito = !novaLista[index.feito]
+    setLista(novaLista)
   }
 
   return(
@@ -27,7 +33,15 @@ const App = () => {
 
       <ul>
         {lista.map((item, index)=>(
-          <li key={index}>{item}</li>
+          <li 
+            key={index}
+            onClick={() => alternarFeito(index)}
+            className={`cursor-pointer text-lg ${
+              item.feito ? "line-through text-gray-500" : "text-black"
+            }`}
+          >
+              {item.texto}
+          </li>
         ))}
       </ul>
       
